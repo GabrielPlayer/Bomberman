@@ -16,14 +16,14 @@ class Main:
         self.map = Map(self)
         self.map.loadWall()
 
-        self.player = Player((60,60), self.map.wallSize[0])
+        self.player = Player(self.map.positionGrid[1][1], self.map.wallSize[0])
 
         self.isRun = False
         self.fullscreen = False
 
     def run(self):
         self.isRun = True
-
+        
         while self.isRun:
             self.screen.fill(self.backgroundColor)
             events = pygame.event.get()

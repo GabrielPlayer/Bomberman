@@ -1,9 +1,10 @@
 import pygame
 
 class Wall(pygame.sprite.Sprite):
-    def __init__(self, map, size,pos) :
-        super().__init__()
+    def __init__(self, map, size, pos, gridPosition) :
+        super().__init__() 
         self.map = map
+        self.gridPosition = gridPosition
         
         self.color = (200,222,0)
         
@@ -17,8 +18,8 @@ class Wall(pygame.sprite.Sprite):
         self.collision = True
 
 class AirWall(Wall):
-    def __init__(self, map, size, pos):
-        super().__init__(map, size, pos)
+    def __init__(self, map, size, pos, gridPosition):
+        super().__init__(map, size, pos, gridPosition)
 
         self.color = (0,100,0)
 
@@ -27,8 +28,8 @@ class AirWall(Wall):
         self.collision = False
 
 class UnbreakableWall(Wall):
-    def __init__(self, map, size, pos):
-        super().__init__(map, size, pos)
+    def __init__(self, map, size, pos, gridPosition):
+        super().__init__(map, size, pos, gridPosition)
         
         self.color = (200,0,0)
         
@@ -36,8 +37,8 @@ class UnbreakableWall(Wall):
 
 
 class BreakeableWall(Wall):
-    def __init__(self, map, size, pos):
-        super().__init__(map, size, pos)
+    def __init__(self, map, size, pos, gridPosition):
+        super().__init__(map, size, pos, gridPosition)
         
         self.color = (0,0,200)
         

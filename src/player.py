@@ -5,10 +5,13 @@ else:
     from src.bomb import Bomb
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, wallSize):
+    def __init__(self, startPositionWall, wallSize):
         super().__init__()
 
         self.wallSize = wallSize
+        
+        self.positionWall = startPositionWall
+        self.positionOnGrill = self.positionWall.gridPosition
 
         self.size = (40,40)
         self.color = (100,100,100)
@@ -17,8 +20,8 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface(self.size)
         self.image.fill(self.color)
                 
-        self.rect = self.image.get_rect(topright=pos)
-        self.position = pygame.math.Vector2(pos)
+        self.rect = self.image.get_rect(center=self.positionWall.rect.center)
+        self.position = pygame.math.Vector2(self.rect.x, self.rect.y)
         self.direction = pygame.math.Vector2(0, 0)
         
         self.key = {"left": pygame.K_q, "right": pygame.K_d, "top": pygame.K_z, "bottom": pygame.K_s, "bomb": pygame.K_SPACE}
@@ -67,7 +70,7 @@ class Player(pygame.sprite.Sprite):
 
     def attack(self, tick):
         if self.keyPressed.get("bomb") and self.canAttack:
-            self.bombSprites.add(Bomb(self.rect.center, tick, self.bombExplosionBlockRange*self.wallSize))
+            self.bombSprites.add(Bomb(self.positionWall.rect.center, tick, self.bombExplosionBlockRange*self.wallSize))
             self.canAttack = False
 
     def pressed(self, keyPressed):
@@ -78,12 +81,19 @@ class Player(pygame.sprite.Sprite):
         if keyPressed[self.key["bottom"]]: self.keyPressed["bottom"]=True
         if keyPressed[self.key["bomb"]]: self.keyPressed["bomb"]=True
 
+    def updatePositionOnGrill(self, walls):
+        for wall in walls:
+            if wall.rect.collidepoint(self.rect.center):
+                self.positionOnGrill = wall.gridPosition
+                self.positionWall = wall
+
     def update(self, event, walls, tick):
         keyPressed = pygame.key.get_pressed()        
         self.pressed(keyPressed)
 
         self.move()
         self.checkCollisions(walls)
+        self.updatePositionOnGrill(walls)        
         
         self.attack(tick)        
         self.bombSprites.update(tick)
