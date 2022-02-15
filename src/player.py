@@ -5,10 +5,8 @@ else:
     from src.bomb import Bomb
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, startPositionWall, wallSize):
+    def __init__(self, startPositionWall):
         super().__init__()
-
-        self.wallSize = wallSize
         
         self.positionWall = startPositionWall
         self.positionOnGrill = self.positionWall.gridPosition
@@ -28,7 +26,6 @@ class Player(pygame.sprite.Sprite):
         self.keyPressed = {}
         
         self.bombSprites = pygame.sprite.Group()
-        self.bombExplosionBlockRange = 3
         self.canAttack = True
                 
     def move(self):
@@ -70,7 +67,7 @@ class Player(pygame.sprite.Sprite):
 
     def attack(self, tick):
         if self.keyPressed.get("bomb") and self.canAttack:
-            self.bombSprites.add(Bomb(self.positionWall.rect.center, tick, self.bombExplosionBlockRange*self.wallSize))
+            self.bombSprites.add(Bomb(self.positionWall, tick,self))
             self.canAttack = False
 
     def pressed(self, keyPressed):
@@ -95,9 +92,7 @@ class Player(pygame.sprite.Sprite):
         self.checkCollisions(walls)
         self.updatePositionOnGrill(walls)        
         
-        self.attack(tick)        
-        self.bombSprites.update(tick)
+        self.attack(tick)
 
     def draw(self, surface):
-        self.bombSprites.draw(surface)
         surface.blit(self.image, self.rect)

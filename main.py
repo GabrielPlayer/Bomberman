@@ -16,7 +16,7 @@ class Main:
         self.map = Map(self)
         self.map.loadWall()
 
-        self.player = Player(self.map.positionGrid[1][1], self.map.wallSize[0])
+        self.player = Player(self.map.positionGrid[11][1])
 
         self.isRun = False
         self.fullscreen = False
@@ -46,10 +46,13 @@ class Main:
             self.map.wallSprites.draw(self.map.image)
 
             self.player.update(events, self.map.wallSprites.sprites(), pygame.time.get_ticks())
+            self.player.bombSprites.update(pygame.time.get_ticks(), self.map.positionGrid, self.map.image)
             self.player.draw(self.map.image)
+            self.player.bombSprites.draw(self.map.image)
 
             pygame.display.update()
             self.clock.tick(self.FPS)
+            pygame.display.set_caption(str(int(self.clock.get_fps())))
 
 if __name__ == "__main__":
     main = Main()

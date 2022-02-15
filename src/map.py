@@ -34,13 +34,13 @@ class Map(pygame.sprite.Sprite):
             for j in range(len(listWall[i])):
                 char = listWall[i][j]
                 if char == "0":
-                    wall = AirWall(self, self.wallSize, (x,y), (i,j))
+                    wall = AirWall(self, self.wallSize, (x,y), (j,i))
                 elif char == "1":
-                    wall = BreakeableWall(self, self.wallSize, (x,y), (i,j))
+                    wall = BreakeableWall(self, self.wallSize, (x,y), (j,i))
                 elif char == "2":
-                    wall = UnbreakableWall(self, self.wallSize, (x,y), (i,j))
+                    wall = UnbreakableWall(self, self.wallSize, (x,y), (j,i))
                 else:
-                    wall = Wall(self, self.wallSize, (x,y), (i,j))
+                    wall = Wall(self, self.wallSize, (x,y), (j,i))
                 self.wallSprites.add(wall)
                 x+=self.wallSize[0]
                 line.append(wall)
